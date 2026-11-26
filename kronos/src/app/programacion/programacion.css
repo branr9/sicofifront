@@ -1,0 +1,91 @@
+:host {
+  display: block;
+  min-width: 0;
+}
+
+:host > div > header > div {
+  height: auto;
+  min-height: 4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 0.5rem;
+  padding-bottom: 0.5rem;
+}
+
+:host > div > header > div > div:first-child {
+  max-width: 100%;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.fraction-modal-content {
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.compare-fichas-modal-content {
+  max-height: calc(100vh - 2rem);
+  overflow-y: auto;
+}
+
+.compare-fichas-options {
+  max-height: 6rem;
+  overflow-y: auto;
+}
+
+.compare-fichas-results {
+  min-height: 12rem;
+}
+
+.sortable-ghost {
+  opacity: 0.35;
+  background-color: #f1f5f9 !important;
+  border: 2px dashed #16a34a !important;
+  transform: scale(0.98);
+}
+
+.sortable-drag {
+  cursor: grabbing !important;
+  transform: rotate(2deg) scale(1.03);
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.15) !important;
+  z-index: 9999 !important;
+}
+
+.dropzone-active {
+  border-color: #22c55e !important;
+  background-color: rgba(240, 253, 244, 0.7) !important;
+}
+
+:host ::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+:host ::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+:host ::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 9999px;
+}
+
+:host ::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+.animate-pop {
+  animation: popIn 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+}
+
+@keyframes popIn {
+  0% {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
