@@ -1,0 +1,37 @@
+<header class="disp-header">
+  <div class="disp-brand">
+    <div class="disp-icon-badge" aria-hidden="true">
+      <svg viewBox="0 0 24 24" class="icon-svg">
+        <rect x="3.5" y="4.5" width="17" height="16" rx="2" />
+        <path d="M8 2.5v4M16 2.5v4M3.5 9.5h17M9 14.5l2 2 4-4" />
+      </svg>
+    </div>
+    <div>
+      <h1 class="disp-title">Gestión de Disponibilidad de Instructores</h1>
+      <p class="disp-subtitle">Programación de Restricciones Horarias (Vista Completa 24h)</p>
+    </div>
+  </div>
+
+  <div class="disp-selector-group">
+    <label for="selectorInstructor" class="disp-selector-label">
+      <svg viewBox="0 0 24 24" class="label-icon" aria-hidden="true">
+        <circle cx="12" cy="7.5" r="3.5" />
+        <path d="M5 20c.8-4 3.5-6 7-6s6.2 2 7 6" />
+      </svg>
+      Instructor:
+    </label>
+    <select
+      id="selectorInstructor"
+      class="disp-select"
+      [value]="instructorSeleccionadoId()"
+      (change)="onSeleccionar($event)"
+    >
+      <option value="">-- Seleccione un instructor --</option>
+      @for (instructor of instructores(); track instructor.id; let idx = $index) {
+        <option [value]="instructor.id">
+          Instructor {{ idx + 1 }} - {{ instructor.nombre }}
+        </option>
+      }
+    </select>
+  </div>
+</header>

@@ -1,0 +1,137 @@
+<aside class="ficha-panel" aria-label="Ficha del instructor">
+  <div class="ficha-superior">
+    <div class="ficha-encabezado">
+      <h2 class="ficha-titulo">
+        <svg viewBox="0 0 24 24" class="icon-emerald" aria-hidden="true">
+          <rect x="3" y="4.5" width="18" height="15" rx="2" />
+          <circle cx="9" cy="11" r="2" />
+          <path d="M6.5 16c.5-1.5 1.5-2.2 2.5-2.2s2 .7 2.5 2.2M14 9.5h4M14 13h4" />
+        </svg>
+        Ficha del Instructor
+      </h2>
+      <span class="ficha-badge">Panel Activo</span>
+    </div>
+
+    <div class="perfil-card">
+      <div class="avatar-wrapper">
+        <img
+          [src]="fotoActual()"
+          alt="Foto del instructor"
+          class="avatar-img"
+          (error)="onFotoError()"
+        />
+        <span class="avatar-check" aria-hidden="true">
+          <svg viewBox="0 0 24 24" class="check-svg">
+            <path d="M5 13l4 4L19 7" />
+          </svg>
+        </span>
+      </div>
+
+      <h3 class="instructor-nombre">
+        {{ instructor()?.nombre ?? 'Seleccione un instructor' }}
+      </h3>
+
+      <div class="instructor-datos">
+        <p class="dato-linea">
+          <svg viewBox="0 0 24 24" class="dato-icon" aria-hidden="true">
+            <rect x="3" y="5.5" width="18" height="13" rx="2" />
+            <path d="M4 7l8 6 8-6" />
+          </svg>
+          <span class="dato-valor">{{ instructor()?.correo ?? '-' }}</span>
+        </p>
+
+        <p class="dato-linea">
+          <svg viewBox="0 0 24 24" class="dato-icon" aria-hidden="true">
+            <path d="M6.5 4h3l1.5 4-2 1.5a12 12 0 0 0 5.5 5.5L16 13l4 1.5v3a2 2 0 0 1-2.2 2A15.5 15.5 0 0 1 4.5 6.2 2 2 0 0 1 6.5 4z" />
+          </svg>
+          <span class="dato-valor">{{ instructor()?.telefono ?? '-' }}</span>
+        </p>
+
+        <div class="fichas-bloque">
+          <p class="fichas-label">
+            <svg viewBox="0 0 24 24" class="dato-icon" aria-hidden="true">
+              <path d="M12 3L3 8l9 5 9-5-9-5zM3 13l9 5 9-5M3 18l9 5 9-5" />
+            </svg>
+            Fichas asociadas:
+          </p>
+
+          <ul class="fichas-lista">
+            @if (!instructor()) {
+              <li class="ficha-vacia">-</li>
+            } @else if (instructor()!.fichas.length === 0) {
+              <li class="ficha-vacia">Sin fichas asociadas</li>
+            } @else {
+              @for (ficha of instructor()!.fichas; track ficha.codigo) {
+                <li class="ficha-item">
+                  <svg viewBox="0 0 24 24" class="ficha-item-icon" aria-hidden="true">
+                    <path d="M12 4L3 9l9 5 9-5-9-5zM7 12v4.5c0 1.4 2.2 2.5 5 2.5s5-1.1 5-2.5V12" />
+                  </svg>
+                  <span>
+                    <strong class="ficha-codigo">{{ ficha.codigo }}</strong> - {{ ficha.nombre }}
+                  </span>
+                </li>
+              }
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="resumen-card">
+      <div>
+        <p class="resumen-titulo">Horas restringidas</p>
+        <p class="resumen-subtitulo">Total acumulado en vista</p>
+      </div>
+      <span id="totalHoras" class="resumen-contador">
+        {{ totalHoras() }} horas
+      </span>
+    </div>
+
+    @if (mensaje(); as msg) {
+      <div
+        id="mensaje"
+        class="alerta-estado"
+        [class.alerta-error]="msg.esError"
+        [class.alerta-ok]="!msg.esError"
+        role="status"
+      >
+        {{ msg.texto }}
+      </div>
+    }
+  </div>
+
+  <div class="acciones-grupo">
+    <button
+      type="button"
+      class="btn-accion btn-nocturna"
+      (click)="restriccionNocturnaClick.emit()"
+    >
+      <svg viewBox="0 0 24 24" class="btn-icon" aria-hidden="true">
+        <path d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z" />
+      </svg>
+      Restricción Nocturna (22:00 - 06:00)
+    </button>
+
+    <button
+      type="button"
+      class="btn-accion btn-guardar"
+      (click)="guardarClick.emit()"
+    >
+      <svg viewBox="0 0 24 24" class="btn-icon" aria-hidden="true">
+        <path d="M5 4h11l3 3v13H5zM8 4v5h7V4M8 20v-6h8v6" />
+      </svg>
+      Guardar restricciones
+    </button>
+
+    <button
+      type="button"
+      class="btn-accion btn-correo"
+      (click)="enviarCorreoClick.emit()"
+    >
+      <svg viewBox="0 0 24 24" class="btn-icon" aria-hidden="true">
+        <path d="M21 3L10 14M21 3l-7 18-4-7-7-4 18-7z" />
+      </svg>
+      Enviar restricciones por correo
+    </button>
+  </div>
+</aside>
