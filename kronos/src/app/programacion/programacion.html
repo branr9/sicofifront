@@ -1,1 +1,1169 @@
-<p>programacion works!</p>
+<div class="h-full font-sans antialiased text-slate-800 flex flex-col bg-slate-50 selection:bg-brand-500 selection:text-white">
+
+    <!-- Header / Navbar Principal (Optimizado para 1366px desktop) -->
+    <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-xs">
+        <div class="max-w-[1850px] mx-auto px-3 sm:px-5 lg:px-6 h-16 flex items-center justify-between gap-3">
+
+            <!-- 1. Logo e Identificación del Sistema -->
+            <!-- <div class="flex items-center gap-2.5 shrink-0">
+                <div
+                    class="bg-gradient-to-tr from-brand-700 to-emerald-500 text-white p-2 rounded-xl shadow-md shadow-brand-500/20 flex items-center justify-center">
+                    <i data-lucide="calendar-range" class="w-5 h-5"></i>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <h1 class="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight leading-none">ScheduleStudio</h1>
+                        <span
+                            class="bg-brand-100 text-brand-800 text-[9px] font-extrabold px-1.5 py-0.5 rounded-full uppercase tracking-wider">KRONOS</span>
+                    </div>
+                    <p class="text-[11px] text-slate-500 font-medium leading-tight">Gestor de Horarios e Instructores SENA</p>
+                </div>
+            </div> -->
+
+            <!-- 2. Controles de Contexto de Formación (Programa, Jornada, Fase) -->
+            <div class="hidden lg:flex items-center gap-2 bg-slate-100/90 p-1.5 rounded-2xl border border-slate-200">
+                <!-- Programa -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-xl shadow-2xs border border-slate-200">
+                    <i data-lucide="book-open" class="w-3.5 h-3.5 text-brand-600 shrink-0"></i>
+                    <span class="text-[11px] font-semibold text-slate-400">Prog:</span>
+                    <select id="select-program"
+                        class="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer">
+                        <option value="adso">ADSO - Análisis y Desarrollo de Software</option>
+                        <option value="multimedia">Diseño e Integración Multimedia</option>
+                        <option value="redes">Administración de Redes</option>
+                        <option value="enfermeria">Enfermería</option>
+                        <option value="negociacion">Negociación Internacional</option>
+                    </select>
+                </div>
+
+                <!-- Jornada -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 bg-white rounded-xl shadow-2xs border border-slate-200">
+                    <i data-lucide="clock" class="w-3.5 h-3.5 text-amber-500 shrink-0"></i>
+                    <span class="text-[11px] font-semibold text-slate-400">Jornada:</span>
+                    <select id="select-jornada"
+                        class="bg-transparent text-xs font-bold text-slate-800 focus:outline-none cursor-pointer">
+                        <option value="diurna">Diurna (06:00 - 18:00)</option>
+                        <option value="nocturna">Nocturna (18:00 - 22:00)</option>
+                    </select>
+                </div>
+
+                <!-- Fase Actual -->
+                <div class="flex items-center gap-1.5 px-2.5 py-1 bg-brand-50 rounded-xl shadow-2xs border border-brand-200">
+                    <i data-lucide="layers" class="w-3.5 h-3.5 text-brand-600 shrink-0"></i>
+                    <span class="text-[11px] font-semibold text-brand-800">Fase:</span>
+                    <select id="select-fase-ficha"
+                        class="bg-transparent text-xs font-bold text-brand-900 focus:outline-none cursor-pointer">
+                        <option value="analisis" selected>Fase 1: Análisis</option>
+                        <option value="planeacion">Fase 2: Planeación</option>
+                        <option value="ejecucion">Fase 3: Ejecución</option>
+                        <option value="evaluacion">Fase 4: Evaluación</option>
+                    </select>
+                </div>
+            </div>
+
+            <!-- 3. Grupo Visual Integrado de la Ficha Seleccionada (Ficha + Trimestre) -->
+            <div class="flex items-center gap-2 bg-slate-50 border border-slate-200/90 p-1 rounded-2xl shadow-2xs shrink-0">
+                <!-- Identificador Ficha Activa -->
+                <div class="flex items-center gap-2 bg-emerald-50 border border-emerald-300 px-2.5 py-1 rounded-xl shadow-2xs">
+                    <span class="relative flex h-2.5 w-2.5">
+                        <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                        <span class="relative inline-flex rounded-full h-2.5 w-2.5 bg-emerald-500"></span>
+                    </span>
+                    <span class="text-xs font-semibold text-emerald-900 whitespace-nowrap">Ficha <strong id="ficha-number-display"
+                            class="text-emerald-950 font-extrabold text-sm ml-0.5">3237741</strong></span>
+                </div>
+
+                <!-- Visualización de Trimestre -->
+                <div id="ficha-trimester-badge-container" class="hidden sm:flex items-center gap-1.5 bg-white border border-slate-200 px-2.5 py-1 rounded-xl text-xs font-bold shadow-2xs">
+                    <i data-lucide="calendar" class="w-3.5 h-3.5 text-brand-600 shrink-0"></i>
+                    <div class="flex items-center gap-1">
+                        <span id="ficha-year-trimester-display" class="bg-amber-100 text-amber-900 border border-amber-300 px-1.5 py-0.5 rounded text-[10px]" title="Trimestre del año calendario (Calculado automáticamente)">T3-2026</span>
+                        <span id="ficha-program-trimester-display" class="bg-brand-100 text-brand-900 border border-brand-300 px-1.5 py-0.5 rounded text-[10px]" title="Trimestre en la etapa lectiva del programa">3° Trim (Lectiva 3/7)</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- Cuerpo Principal de la Aplicación -->
+    <main
+        class="flex-1 max-w-[1850px] w-full mx-auto p-4 sm:p-6 lg:p-8 grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+        <!-- ==========================================
+             SECCIÓN 1: INSTRUCTORES DISPONIBLES (RF-02, RF-03, RF-04, RF-05)
+             ========================================== -->
+        <section class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 flex flex-col gap-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-brand-50 text-brand-700 rounded-lg">
+                        <i data-lucide="users" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-900">Instructores Disponibles</h2>
+                        <span class="text-[11px] text-slate-400 block font-medium">Control de Carga Horaria (Max
+                            40h)</span>
+                    </div>
+                </div>
+
+                <!-- RF-05: Botón para Modal de Reemplazo / Intercambio Global -->
+                <button id="btn-global-swap" title="Reemplazar o intercambiar asignaciones entre instructores"
+                    class="text-xs font-bold text-amber-800 bg-amber-50 hover:bg-amber-100 border border-amber-200 px-2.5 py-1 rounded-lg transition-all flex items-center gap-1 cursor-pointer">
+                    <i data-lucide="repeat" class="w-3.5 h-3.5"></i>
+                    <span>Reemplazar</span>
+                </button>
+            </div>
+
+            <!-- Buscador de Instructores (RF-13) -->
+            <div class="relative">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input id="search-instructor" type="text" placeholder="Buscar instructor por nombre o área..."
+                    class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all placeholder:text-slate-400">
+            </div>
+
+            <div
+                class="text-[11px] text-slate-600 leading-relaxed bg-brand-50/70 border border-brand-200/80 p-2.5 rounded-xl flex items-start gap-2">
+                <i data-lucide="info" class="w-4 h-4 text-brand-600 shrink-0 mt-0.5"></i>
+                <span><strong>Lógica de Asignación:</strong> Selecciona RAs a la derecha, luego selecciona bloques en el
+                    horario y finalmente haz clic o arrastra el instructor.</span>
+            </div>
+
+            <!-- Pool de Instructores (Drag & Drop + Click) -->
+            <div id="instructors-pool" class="space-y-3 min-h-[400px]">
+
+                <!-- Instructor 1 -->
+                <div data-id="inst-1" data-name="German Ramírez" data-hours="32" data-color="emerald"
+                    class="instructor-card group bg-white border border-slate-200 hover:border-brand-500 rounded-xl p-3 cursor-pointer transition-all hover:shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bottom-0 w-1 bg-brand-500"></div>
+                    <div class="flex items-start justify-between mb-2 pl-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div
+                                class="w-8 h-8 rounded-full bg-emerald-100 text-brand-800 font-bold text-xs flex items-center justify-center border border-emerald-200 shadow-2xs shrink-0">
+                                GR
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="text-xs font-bold text-slate-900 group-hover:text-brand-600 transition-colors truncate">
+                                        German Ramírez</h3>
+                                    <button type="button"
+                                        class="btn-instructor-details text-slate-400 hover:text-brand-600 p-0.5 rounded transition-colors"
+                                        title="Ver horario completo, restricciones y RAs habilitados">
+                                        <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <span class="text-[10px] text-slate-500 font-medium truncate block">Análisis y Metodologías</span>
+                            </div>
+                        </div>
+                        <button title="Asignar a bloques seleccionados"
+                            class="btn-assign-click text-[10px] font-bold text-emerald-800 bg-emerald-100 hover:bg-brand-600 hover:text-white px-2 py-1 rounded-lg transition-all flex items-center gap-1 shrink-0">
+                            <i data-lucide="user-check" class="w-3 h-3"></i>
+                            <span>Asignar</span>
+                        </button>
+                    </div>
+
+                    <div class="pl-2 space-y-1">
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-500 font-medium">Carga Semanal: <strong
+                                    class="text-slate-800 hours-text">32 / 40h</strong></span>
+                            <span
+                                class="status-badge text-brand-700 font-semibold bg-brand-50 border border-brand-200 px-1.5 py-0.5 rounded text-[10px]">Disponible</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="hours-bar h-full bg-brand-500 rounded-full transition-all duration-500"
+                                style="width: 80%"></div>
+                        </div>
+                        <!-- Contenedor dinámico de motivo de bloqueo / restricción -->
+                        <div class="instructor-reason-box hidden mt-1.5 p-1.5 bg-amber-50/90 border border-amber-200 rounded-lg text-[10px] text-amber-800 font-medium leading-tight flex items-start gap-1">
+                            <i data-lucide="alert-circle" class="w-3 h-3 text-amber-600 shrink-0 mt-0.5"></i>
+                            <span class="instructor-reason-text"></span>
+                        </div>
+
+                        <!-- Botón Ver Disponibilidad -->
+                        <button type="button"
+                            class="btn-instructor-availability text-[10px] font-extrabold text-slate-700 hover:text-brand-700 bg-slate-100/80 hover:bg-brand-50 border border-slate-200 hover:border-brand-300 px-2 py-1 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer w-full mt-2"
+                            title="Ver disponibilidad semanal por días y bloques">
+                            <i data-lucide="calendar-days" class="w-3.5 h-3.5 text-brand-600"></i>
+                            <span>Ver disponibilidad</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Instructor 2 -->
+                <div data-id="inst-2" data-name="Lizeth Giraldo" data-hours="36" data-color="purple"
+                    class="instructor-card group bg-white border border-slate-200 hover:border-purple-500 rounded-xl p-3 cursor-pointer transition-all hover:shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bottom-0 w-1 bg-purple-500"></div>
+                    <div class="flex items-start justify-between mb-2 pl-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div
+                                class="w-8 h-8 rounded-full bg-purple-100 text-purple-800 font-bold text-xs flex items-center justify-center border border-purple-200 shadow-2xs shrink-0">
+                                LG
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="text-xs font-bold text-slate-900 group-hover:text-purple-600 transition-colors truncate">
+                                        Lizeth Giraldo</h3>
+                                    <button type="button"
+                                        class="btn-instructor-details text-slate-400 hover:text-purple-600 p-0.5 rounded transition-colors"
+                                        title="Ver horario completo, restricciones y RAs habilitados">
+                                        <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <span class="text-[10px] text-slate-500 font-medium truncate block">Transversal - Ética & Paz</span>
+                            </div>
+                        </div>
+                        <button title="Asignar a bloques seleccionados"
+                            class="btn-assign-click text-[10px] font-bold text-purple-800 bg-purple-100 hover:bg-purple-600 hover:text-white px-2 py-1 rounded-lg transition-all flex items-center gap-1 shrink-0">
+                            <i data-lucide="user-check" class="w-3 h-3"></i>
+                            <span>Asignar</span>
+                        </button>
+                    </div>
+
+                    <div class="pl-2 space-y-1">
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-500 font-medium">Carga Semanal: <strong
+                                     class="text-slate-800 hours-text">36 / 40h</strong></span>
+                            <span
+                                class="status-badge text-purple-700 font-semibold bg-purple-50 border border-purple-200 px-1.5 py-0.5 rounded text-[10px]">Disponible</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="hours-bar h-full bg-purple-500 rounded-full transition-all duration-500"
+                                style="width: 90%"></div>
+                        </div>
+                        <!-- Contenedor dinámico de motivo de bloqueo / restricción -->
+                        <div class="instructor-reason-box hidden mt-1.5 p-1.5 bg-amber-50/90 border border-amber-200 rounded-lg text-[10px] text-amber-800 font-medium leading-tight flex items-start gap-1">
+                            <i data-lucide="alert-circle" class="w-3 h-3 text-amber-600 shrink-0 mt-0.5"></i>
+                            <span class="instructor-reason-text"></span>
+                        </div>
+
+                        <!-- Botón Ver Disponibilidad -->
+                        <button type="button"
+                            class="btn-instructor-availability text-[10px] font-extrabold text-slate-700 hover:text-purple-700 bg-slate-100/80 hover:bg-purple-50 border border-slate-200 hover:border-purple-300 px-2 py-1 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer w-full mt-2"
+                            title="Ver disponibilidad semanal por días y bloques">
+                            <i data-lucide="calendar-days" class="w-3.5 h-3.5 text-purple-600"></i>
+                            <span>Ver disponibilidad</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Instructor 3 -->
+                <div data-id="inst-3" data-name="Mónica Laverde" data-hours="28" data-color="blue"
+                    class="instructor-card group bg-white border border-slate-200 hover:border-blue-500 rounded-xl p-3 cursor-pointer transition-all hover:shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bottom-0 w-1 bg-blue-500"></div>
+                    <div class="flex items-start justify-between mb-2 pl-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div
+                                class="w-8 h-8 rounded-full bg-blue-100 text-blue-800 font-bold text-xs flex items-center justify-center border border-blue-200 shadow-2xs shrink-0">
+                                ML
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="text-xs font-bold text-slate-900 group-hover:text-blue-600 transition-colors truncate">
+                                        Mónica Laverde</h3>
+                                    <button type="button"
+                                        class="btn-instructor-details text-slate-400 hover:text-blue-600 p-0.5 rounded transition-colors"
+                                        title="Ver horario completo, restricciones y RAs habilitados">
+                                        <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <span class="text-[10px] text-slate-500 font-medium truncate block">Transversal - Inglés Técnico</span>
+                            </div>
+                        </div>
+                        <button title="Asignar a bloques seleccionados"
+                            class="btn-assign-click text-[10px] font-bold text-blue-800 bg-blue-100 hover:bg-blue-600 hover:text-white px-2 py-1 rounded-lg transition-all flex items-center gap-1 shrink-0">
+                            <i data-lucide="user-check" class="w-3 h-3"></i>
+                            <span>Asignar</span>
+                        </button>
+                    </div>
+
+                    <div class="pl-2 space-y-1">
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-500 font-medium">Carga Semanal: <strong
+                                    class="text-slate-800 hours-text">28 / 40h</strong></span>
+                            <span
+                                class="status-badge text-blue-700 font-semibold bg-blue-50 border border-blue-200 px-1.5 py-0.5 rounded text-[10px]">Disponible</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="hours-bar h-full bg-blue-500 rounded-full transition-all duration-500"
+                                style="width: 70%"></div>
+                        </div>
+                        <!-- Contenedor dinámico de motivo de bloqueo / restricción -->
+                        <div class="instructor-reason-box hidden mt-1.5 p-1.5 bg-amber-50/90 border border-amber-200 rounded-lg text-[10px] text-amber-800 font-medium leading-tight flex items-start gap-1">
+                            <i data-lucide="alert-circle" class="w-3 h-3 text-amber-600 shrink-0 mt-0.5"></i>
+                            <span class="instructor-reason-text"></span>
+                        </div>
+
+                        <!-- Botón Ver Disponibilidad -->
+                        <button type="button"
+                            class="btn-instructor-availability text-[10px] font-extrabold text-slate-700 hover:text-blue-700 bg-slate-100/80 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 px-2 py-1 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer w-full mt-2"
+                            title="Ver disponibilidad semanal por días y bloques">
+                            <i data-lucide="calendar-days" class="w-3.5 h-3.5 text-blue-600"></i>
+                            <span>Ver disponibilidad</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Instructor 4 -->
+                <div data-id="inst-4" data-name="Juan Camilo Martínez" data-hours="24" data-color="indigo"
+                    class="instructor-card group bg-white border border-slate-200 hover:border-indigo-500 rounded-xl p-3 cursor-pointer transition-all hover:shadow-md relative overflow-hidden">
+                    <div class="absolute top-0 left-0 bottom-0 w-1 bg-indigo-500"></div>
+                    <div class="flex items-start justify-between mb-2 pl-2">
+                        <div class="flex items-center gap-2.5 min-w-0">
+                            <div
+                                class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-800 font-bold text-xs flex items-center justify-center border border-indigo-200 shadow-2xs shrink-0">
+                                JM
+                            </div>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-1.5">
+                                    <h3 class="text-xs font-bold text-slate-900 group-hover:text-indigo-600 transition-colors truncate">
+                                        Juan Camilo Martínez</h3>
+                                    <button type="button"
+                                        class="btn-instructor-details text-slate-400 hover:text-indigo-600 p-0.5 rounded transition-colors"
+                                        title="Ver horario completo, restricciones y RAs habilitados">
+                                        <i data-lucide="info" class="w-3.5 h-3.5"></i>
+                                    </button>
+                                </div>
+                                <span class="text-[10px] text-slate-500 font-medium truncate block">Algoritmos & Desarrollo</span>
+                            </div>
+                        </div>
+                        <button title="Asignar a bloques seleccionados"
+                            class="btn-assign-click text-[10px] font-bold text-indigo-800 bg-indigo-100 hover:bg-indigo-600 hover:text-white px-2 py-1 rounded-lg transition-all flex items-center gap-1 shrink-0">
+                            <i data-lucide="user-check" class="w-3 h-3"></i>
+                            <span>Asignar</span>
+                        </button>
+                    </div>
+
+                    <div class="pl-2 space-y-1">
+                        <div class="flex justify-between text-[11px]">
+                            <span class="text-slate-500 font-medium">Carga Semanal: <strong
+                                    class="text-slate-800 hours-text">24 / 40h</strong></span>
+                            <span
+                                class="status-badge text-indigo-700 font-semibold bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded text-[10px]">Disponible</span>
+                        </div>
+                        <div class="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+                            <div class="hours-bar h-full bg-indigo-500 rounded-full transition-all duration-500"
+                                style="width: 60%"></div>
+                        </div>
+                        <!-- Contenedor dinámico de motivo de bloqueo / restricción -->
+                        <div class="instructor-reason-box hidden mt-1.5 p-1.5 bg-amber-50/90 border border-amber-200 rounded-lg text-[10px] text-amber-800 font-medium leading-tight flex items-start gap-1">
+                            <i data-lucide="alert-circle" class="w-3 h-3 text-amber-600 shrink-0 mt-0.5"></i>
+                            <span class="instructor-reason-text"></span>
+                        </div>
+
+                        <!-- Botón Ver Disponibilidad -->
+                        <button type="button"
+                            class="btn-instructor-availability text-[10px] font-extrabold text-slate-700 hover:text-indigo-700 bg-slate-100/80 hover:bg-indigo-50 border border-slate-200 hover:border-indigo-300 px-2 py-1 rounded-lg transition-all flex items-center justify-center gap-1.5 cursor-pointer w-full mt-2"
+                            title="Ver disponibilidad semanal por días y bloques">
+                            <i data-lucide="calendar-days" class="w-3.5 h-3.5 text-indigo-600"></i>
+                            <span>Ver disponibilidad</span>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- ==========================================
+             SECCIÓN 2: HORARIO SEMANAL DE LA FICHA (RF-06, RF-08, RF-10)
+             ========================================== -->
+        <section class="lg:col-span-6 bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 flex flex-col gap-4">
+            <div class="flex flex-wrap items-center justify-between pb-3 border-b border-slate-100 gap-2">
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-indigo-50 text-indigo-700 rounded-lg">
+                        <i data-lucide="calendar" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-900">Parrilla de Horario Semanal</h2>
+                        <span class="text-[11px] text-slate-400 block font-medium">Asignación por bloques
+                            (Fraccionamiento trimestral)</span>
+                    </div>
+                </div>
+
+                <!-- Selección múltiple, Acciones de Ficha y Guardar (RF-06, RF-08) -->
+                <div class="flex flex-wrap items-center gap-2">
+                    <span id="selected-blocks-count"
+                        class="hidden text-[11px] font-bold bg-brand-100 text-brand-800 border border-brand-300 px-2.5 py-1 rounded-xl animate-pop">
+                        0 seleccionados
+                    </span>
+                    <button id="btn-select-all"
+                        class="text-xs font-semibold px-3 py-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 rounded-xl transition-all flex items-center gap-1 cursor-pointer">
+                        <i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i>
+                        <span>Seleccionar Todos</span>
+                    </button>
+                    <button id="btn-clear-all"
+                        class="text-xs font-semibold px-3 py-1.5 bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 rounded-xl transition-all flex items-center gap-1 cursor-pointer">
+                        <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                        <span>Limpiar</span>
+                    </button>
+                    <button id="btn-view-active-history"
+                        class="text-xs font-bold px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-950 border border-indigo-200 rounded-xl transition-all flex items-center gap-1 cursor-pointer shadow-2xs"
+                        title="Ver historial de programaciones anteriores de esta ficha">
+                        <i data-lucide="history" class="w-3.5 h-3.5 text-indigo-600"></i>
+                        <span>Historial</span>
+                    </button>
+                    <button id="btn-compare-fichas"
+                        class="text-xs font-bold px-3 py-1.5 bg-white hover:bg-slate-100 text-slate-800 border border-slate-200 rounded-xl transition-all flex items-center gap-1 cursor-pointer shadow-2xs"
+                        title="Comparar la programación de esta ficha con otras fichas">
+                        <i data-lucide="columns-2" class="w-3.5 h-3.5 text-brand-600"></i>
+                        <span>Comparar</span>
+                    </button>
+                    <button id="btn-save-schedule-sec"
+                        class="text-xs font-bold px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white rounded-xl transition-all flex items-center gap-1 cursor-pointer shadow-xs">
+                        <i data-lucide="save" class="w-3.5 h-3.5"></i>
+                        <span>Guardar</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Grilla Interactiva de Días y Bloques Horarios -->
+            <div class="overflow-x-auto pb-2">
+                <div class="min-w-[580px] grid grid-cols-6 gap-2 pt-1">
+                    <!-- Encabezados Días -->
+                    <div
+                        class="text-center font-extrabold text-xs text-slate-600 tracking-wider bg-slate-100/90 py-1.5 rounded-lg border border-slate-200/60">
+                        LUN</div>
+                    <div
+                        class="text-center font-extrabold text-xs text-slate-600 tracking-wider bg-slate-100/90 py-1.5 rounded-lg border border-slate-200/60">
+                        MAR</div>
+                    <div
+                        class="text-center font-extrabold text-xs text-slate-600 tracking-wider bg-slate-100/90 py-1.5 rounded-lg border border-slate-200/60">
+                        MIÉ</div>
+                    <div
+                        class="text-center font-extrabold text-xs text-slate-600 tracking-wider bg-slate-100/90 py-1.5 rounded-lg border border-slate-200/60">
+                        JUE</div>
+                    <div
+                        class="text-center font-extrabold text-xs text-slate-600 tracking-wider bg-slate-100/90 py-1.5 rounded-lg border border-slate-200/60">
+                        VIE</div>
+                    <div
+                        class="text-center font-extrabold text-xs text-slate-600 tracking-wider bg-slate-100/90 py-1.5 rounded-lg border border-slate-200/60">
+                        SÁB</div>
+
+                    <!-- BLOQUE 1 (06:00 - 10:00) -->
+                    <!-- LUN -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 1" data-day="LUN">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">06:00 - 10:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- MAR -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 1" data-day="MAR">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">06:00 - 10:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- MIE -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 1" data-day="MIE">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">06:00 - 10:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- JUE -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 1" data-day="JUE">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">06:00 - 10:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- VIE -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 1" data-day="VIE">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">06:00 - 10:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- SAB -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 1" data-day="SAB">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">06:00 - 10:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+
+                    <!-- BLOQUE 2 (10:00 - 14:00) -->
+                    <!-- LUN -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 2" data-day="LUN">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">10:00 - 14:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- MAR -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 2" data-day="MAR">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">10:00 - 14:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- MIE -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 2" data-day="MIE">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">10:00 - 14:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- JUE -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 2" data-day="JUE">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">10:00 - 14:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- VIE -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 2" data-day="VIE">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">10:00 - 14:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+                    <!-- SAB -->
+                    <div class="dropzone border-2 border-dashed border-slate-200 rounded-xl p-2 min-h-[115px] flex flex-col justify-between hover:border-brand-400 transition-all bg-slate-50/50 relative group cursor-pointer"
+                        data-block="Bloque 2" data-day="SAB">
+                        <div class="flex items-center justify-between pointer-events-none mb-1">
+                            <span class="text-[9px] font-bold text-slate-400 uppercase">10:00 - 14:00</span>
+                            <span
+                                class="block-select-btn w-3.5 h-3.5 rounded-full border border-slate-300 bg-white flex items-center justify-center"></span>
+                        </div>
+                        <div class="slot-content flex flex-col gap-1.5 my-auto w-full"></div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Resumen Totalizador de Carga -->
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 flex items-center justify-between text-xs">
+                <div class="flex items-center gap-2">
+                    <i data-lucide="pie-chart" class="w-4 h-4 text-brand-600"></i>
+                    <span class="font-medium text-slate-600">Total Bloques Asignados:</span>
+                    <strong id="total-blocks-count" class="text-slate-900 font-extrabold text-sm">0 / 12</strong>
+                </div>
+                <div class="flex items-center gap-2">
+                    <span class="font-medium text-slate-600">Horas Cubiertas Ficha:</span>
+                    <strong id="total-hours-count" class="text-brand-700 font-extrabold text-sm">0 hrs</strong>
+                </div>
+            </div>
+            <!-- Panel de Asignaciones Incompletas (RF-15) -->
+            <div id="incomplete-assignments-container" class="mt-4">
+                <div class="flex items-center gap-2 pb-2 border-b border-slate-100">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 text-amber-500"></i>
+                    <h3 class="text-xs font-bold text-slate-900">Asignaciones incompletas</h3>
+                    <span id="incomplete-badge"
+                        class="ml-auto text-[10px] font-bold bg-amber-100 text-amber-800 px-2 py-0.5 rounded-full">0</span>
+                </div>
+                <div id="incomplete-list" class="space-y-2 mt-2">
+                    <p class="text-xs text-slate-500">No hay asignaciones incompletas.</p>
+                </div>
+            </div>
+
+        </section>
+
+        <!-- ==========================================
+             SECCIÓN 3: COMPETENCIAS Y RESULTADOS DE APRENDIZAJE (RF-01, RF-07, RF-11, RF-13, RF-14)
+             ========================================== -->
+        <section class="lg:col-span-3 bg-white rounded-2xl border border-slate-200 shadow-2xs p-4 flex flex-col gap-4">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-2">
+                    <div class="p-1.5 bg-emerald-50 text-brand-700 rounded-lg">
+                        <i data-lucide="check-square" class="w-4 h-4"></i>
+                    </div>
+                    <div>
+                        <h2 class="text-sm font-bold text-slate-900">Competencias y RAs</h2>
+                        <span class="text-[11px] text-slate-400 block font-medium">Resultados Pendientes por
+                            Asignar</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Buscador por código o nombre (RF-13) -->
+            <div class="relative">
+                <i data-lucide="search" class="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+                <input id="search-competencies" type="text" placeholder="Buscar por código o nombre de RA..."
+                    class="w-full pl-8 pr-3 py-1.5 text-xs bg-slate-50 border border-slate-200 rounded-xl focus:bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all placeholder:text-slate-400">
+            </div>
+
+            <!-- Progreso Global de la Fase Activa -->
+            <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1.5">
+                <div class="flex justify-between text-xs font-semibold">
+                    <span class="text-slate-600">Avance de la Fase</span>
+                    <span class="text-brand-700" id="phase-progress-text">0% Asignado</span>
+                </div>
+                <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                    <div id="phase-progress-bar" class="h-full bg-brand-500 rounded-full transition-all duration-300"
+                        style="width: 0%"></div>
+                </div>
+            </div>
+
+            <!-- Lista de Competencias y RAs -->
+            <div id="competencies-container" class="space-y-3 overflow-y-auto max-h-[500px] pr-1">
+
+                <!-- Competencia 1 (Técnica) -->
+                <div class="competency-card border border-slate-200 rounded-xl p-3 bg-slate-50/50 space-y-2 hover:bg-slate-50 transition-colors"
+                    data-comp-id="comp-220501093">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/80">
+                        <div class="flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-brand-500 mt-1.5 shrink-0"
+                                title="Competencia Técnica"></span>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 leading-snug">Evaluar requisitos de la
+                                    solución de software</h3>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-[10px] text-slate-400 font-semibold">Código: 220501093</span>
+                                    <span
+                                        class="text-[9px] bg-emerald-100 text-emerald-800 font-bold px-1.5 py-0.2 rounded">Técnica</span>
+                                </div>
+                            </div>
+                        </div>
+                        <label
+                            class="flex items-center gap-1 cursor-pointer bg-slate-100 hover:bg-brand-50 border border-slate-200 px-2 py-0.5 rounded-md text-[10px] font-semibold text-slate-600 transition-all shrink-0">
+                            <input type="checkbox"
+                                class="select-all-competency rounded text-brand-600 focus:ring-brand-500 accent-brand-600 w-3 h-3">
+                            <span>Todos</span>
+                        </label>
+                    </div>
+
+                    <div class="space-y-2 pl-2 pt-1 competency-results-list">
+                        <label data-result-id="res-101"
+                            class="competency-item flex items-start gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900">
+                            <input type="checkbox"
+                                class="competency-check mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500 accent-brand-600 w-3.5 h-3.5">
+                            <span class="leading-tight">Modelar las funciones del software de acuerdo con el informe de
+                                requisitos.</span>
+                        </label>
+
+                        <label data-result-id="res-102"
+                            class="competency-item flex items-start gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900">
+                            <input type="checkbox"
+                                class="competency-check mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500 accent-brand-600 w-3.5 h-3.5">
+                            <span class="leading-tight">Planear actividades de análisis de acuerdo con la metodología
+                                seleccionada.</span>
+                        </label>
+
+                        <label data-result-id="res-103"
+                            class="competency-item flex items-start gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900">
+                            <input type="checkbox"
+                                class="competency-check mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500 accent-brand-600 w-3.5 h-3.5">
+                            <span class="leading-tight">Verificar los modelos realizados en la fase de análisis.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Competencia 2 (Transversal - Ética) -->
+                <div class="competency-card border border-slate-200 rounded-xl p-3 bg-slate-50/50 space-y-2 hover:bg-slate-50 transition-colors"
+                    data-comp-id="comp-240201524">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/80">
+                        <div class="flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-purple-500 mt-1.5 shrink-0"
+                                title="Competencia Transversal"></span>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 leading-snug">Interactuar en el contexto
+                                    productivo y social (Enrique Low Murtra)</h3>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-[10px] text-slate-400 font-semibold">Código: 240201524</span>
+                                    <span
+                                        class="text-[9px] bg-purple-100 text-purple-800 font-bold px-1.5 py-0.2 rounded">Transversal</span>
+                                </div>
+                            </div>
+                        </div>
+                        <label
+                            class="flex items-center gap-1 cursor-pointer bg-slate-100 hover:bg-brand-50 border border-slate-200 px-2 py-0.5 rounded-md text-[10px] font-semibold text-slate-600 transition-all shrink-0">
+                            <input type="checkbox"
+                                class="select-all-competency rounded text-brand-600 focus:ring-brand-500 accent-brand-600 w-3 h-3">
+                            <span>Todos</span>
+                        </label>
+                    </div>
+
+                    <div class="space-y-2 pl-2 pt-1 competency-results-list">
+                        <label data-result-id="res-201"
+                            class="competency-item flex items-start gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900">
+                            <input type="checkbox"
+                                class="competency-check mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500 accent-brand-600 w-3.5 h-3.5">
+                            <span class="leading-tight">Promover la cultura de paz con base en principios éticos.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Competencia 3 (Transversal - Inglés) -->
+                <div class="competency-card border border-slate-200 rounded-xl p-3 bg-slate-50/50 space-y-2 hover:bg-slate-50 transition-colors"
+                    data-comp-id="comp-240202501">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/80">
+                        <div class="flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-blue-500 mt-1.5 shrink-0"
+                                title="Competencia Transversal"></span>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-900 leading-snug">Interactuar en lengua inglesa
+                                    de forma oral y escrita</h3>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-[10px] text-slate-400 font-semibold">Código: 240202501</span>
+                                    <span
+                                        class="text-[9px] bg-blue-100 text-blue-800 font-bold px-1.5 py-0.2 rounded">Transversal</span>
+                                </div>
+                            </div>
+                        </div>
+                        <label
+                            class="flex items-center gap-1 cursor-pointer bg-slate-100 hover:bg-brand-50 border border-slate-200 px-2 py-0.5 rounded-md text-[10px] font-semibold text-slate-600 transition-all shrink-0">
+                            <input type="checkbox"
+                                class="select-all-competency rounded text-brand-600 focus:ring-brand-500 accent-brand-600 w-3 h-3">
+                            <span>Todos</span>
+                        </label>
+                    </div>
+
+                    <div class="space-y-2 pl-2 pt-1 competency-results-list">
+                        <label data-result-id="res-301"
+                            class="competency-item flex items-start gap-2 cursor-pointer text-xs text-slate-700 hover:text-slate-900">
+                            <input type="checkbox"
+                                class="competency-check mt-0.5 rounded border-slate-300 text-brand-600 focus:ring-brand-500 accent-brand-600 w-3.5 h-3.5">
+                            <span class="leading-tight">Comprender información sobre situaciones cotidianas y laborales
+                                actuales.</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Competencia 4 (RF-11: Indicador de Ejecutada en Trimestre Anterior) -->
+                <div class="competency-card border border-slate-200 rounded-xl p-3 bg-slate-100/60 opacity-75 space-y-2"
+                    data-comp-id="comp-220501092">
+                    <div class="flex items-center justify-between gap-2 pb-2 border-b border-slate-200/80">
+                        <div class="flex items-start gap-2">
+                            <span class="w-2 h-2 rounded-full bg-slate-400 mt-1.5 shrink-0"></span>
+                            <div>
+                                <h3 class="text-xs font-bold text-slate-800 leading-snug">Establecer requisitos del
+                                    cliente</h3>
+                                <div class="flex items-center gap-1.5 mt-0.5">
+                                    <span class="text-[10px] text-slate-500 font-semibold">Código: 220501092</span>
+                                    <span
+                                        class="text-[9px] bg-slate-200 text-slate-700 font-bold px-1.5 py-0.2 rounded">Desarrollada
+                                        (Trimestre Anterior)</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- ==========================================
+         MODAL DE PROGRAMACIÓN FRACCIONADA DE SEMANAS (RF-10)
+         ========================================== -->
+    <div id="fraction-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 animate-pop">
+        <div class="fraction-modal-content bg-white rounded-2xl border border-slate-200 max-w-lg w-full p-6 shadow-2xl space-y-5 relative">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-brand-50 border border-brand-200 text-brand-700 rounded-xl">
+                        <i data-lucide="sliders" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 id="modal-block-title" class="text-base font-bold text-slate-900">Programación Fraccionada
+                            de Semanas</h3>
+                        <p id="modal-block-subtitle" class="text-xs text-slate-500 font-medium">Asigna el rango de
+                            semanas del trimestre académico</p>
+                    </div>
+                </div>
+                <button type="button" id="btn-close-modal"
+                    class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3.5 space-y-2 text-xs">
+                <div class="flex items-center justify-between">
+                    <span class="font-semibold text-slate-500">Instructor a Asignar:</span>
+                    <strong id="modal-inst-name" class="text-slate-900 font-bold">German Ramírez</strong>
+                </div>
+                <div class="flex items-start justify-between gap-2 pt-1 border-t border-slate-200/60">
+                    <span class="font-semibold text-slate-500 shrink-0">Resultado(s) de Aprendizaje:</span>
+                    <span id="modal-ra-text" class="text-slate-700 font-medium text-right line-clamp-2">Modelar las
+                        funciones del software...</span>
+                </div>
+            </div>
+
+            <!-- Grilla Interactiva de 12 Semanas -->
+            <div class="space-y-2">
+                <div class="flex items-center justify-between text-xs font-semibold text-slate-600">
+                    <span>Malla de 12 Semanas del Trimestre</span>
+                    <span id="modal-weeks-count" class="text-brand-700 font-bold">0 Semanas Seleccionadas</span>
+                </div>
+
+                <div id="modal-weeks-grid" class="grid grid-cols-4 gap-2 my-2"></div>
+
+                <div
+                    class="flex items-center justify-between text-xs font-medium text-slate-700 bg-slate-100 p-3 rounded-xl border border-slate-200">
+                    <div>Inicio: <strong id="lbl-start-w" class="text-brand-700 text-sm">-</strong></div>
+                    <div>Fin: <strong id="lbl-end-w" class="text-brand-700 text-sm">-</strong></div>
+                    <div>Total: <strong id="lbl-total-w" class="text-slate-900 text-sm font-bold">0</strong> sem.</div>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button type="button" id="btn-cancel-modal"
+                    class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition-colors cursor-pointer">
+                    Cancelar
+                </button>
+                <button type="button" id="btn-confirm-modal" disabled
+                    class="px-5 py-2.5 rounded-xl bg-brand-600 hover:bg-brand-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    <span>Confirmar Asignación</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE REEMPLAZO / INTERCAMBIO DE INSTRUCTORES (RF-05)
+         ========================================== -->
+    <div id="swap-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 animate-pop">
+        <div class="bg-white rounded-2xl border border-slate-200 max-w-md w-full p-6 shadow-2xl space-y-5 relative">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-amber-50 border border-amber-200 text-amber-700 rounded-xl">
+                        <i data-lucide="repeat" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Reemplazar Instructor</h3>
+                        <p class="text-xs text-slate-500 font-medium">Transfiere bloques manteniendo intactos los RAs
+                        </p>
+                    </div>
+                </div>
+                <button type="button" id="btn-close-swap-modal"
+                    class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <div class="space-y-4 text-xs">
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">1. Instructor Saliente (Actual):</label>
+                    <select id="swap-select-old-inst"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none cursor-pointer">
+                        <option value="">-- Seleccionar Instructor a Reemplazar --</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block font-bold text-slate-700 mb-1">2. Instructor Entrante (Nuevo):</label>
+                    <select id="swap-select-new-inst"
+                        class="w-full p-2.5 bg-slate-50 border border-slate-200 rounded-xl font-medium text-slate-800 focus:bg-white focus:ring-2 focus:ring-amber-500/20 focus:border-amber-500 outline-none cursor-pointer">
+                        <option value="">-- Seleccionar Nuevo Instructor --</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100">
+                <button type="button" id="btn-cancel-swap-modal"
+                    class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition-colors cursor-pointer">
+                    Cancelar
+                </button>
+                <button type="button" id="btn-confirm-swap-modal" disabled
+                    class="px-5 py-2.5 rounded-xl bg-amber-600 hover:bg-amber-700 disabled:bg-slate-200 disabled:text-slate-400 text-white font-bold text-xs shadow-xs transition-all flex items-center gap-1.5 cursor-pointer">
+                    <i data-lucide="check" class="w-4 h-4"></i>
+                    <span>Ejecutar Reemplazo</span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+     MODAL DE COMPARACIÓN DE FICHAS
+     ========================================== -->
+    <div id="compare-fichas-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 animate-pop">
+        <div
+            class="compare-fichas-modal-content bg-white rounded-2xl border border-slate-200 max-w-7xl w-full p-6 shadow-2xl space-y-5 relative max-h-[92vh] overflow-y-auto flex flex-col">
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="p-2.5 bg-brand-50 border border-brand-200 text-brand-700 rounded-xl">
+                        <i data-lucide="columns-2" class="w-5 h-5"></i>
+                    </div>
+                    <div>
+                        <h3 class="text-base font-bold text-slate-900">Comparar fichas</h3>
+                        <p class="text-xs text-slate-500 font-medium">Selecciona varias fichas para visualizarlas en
+                            paralelo</p>
+                    </div>
+                </div>
+                <button type="button" id="btn-close-compare-fichas-modal"
+                    class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Barra de selección compacta (chips) -->
+            <div class="bg-slate-50 border border-slate-200/80 rounded-xl p-3 shrink-0">
+                <div class="flex items-center justify-between gap-3">
+                    <div>
+                        <h4 class="text-xs font-bold text-slate-900">Fichas disponibles</h4>
+                        <p class="text-[11px] text-slate-500">La ficha activa se selecciona automáticamente.</p>
+                    </div>
+                    <span id="compare-fichas-selection-count"
+                        class="text-[11px] font-bold text-brand-700 bg-brand-50 border border-brand-200 px-2.5 py-1 rounded-lg">1
+                        ficha seleccionada</span>
+                </div>
+                <!-- Filtro de jornada -->
+                <div class="flex items-center gap-2 mt-1.5">
+                    <label for="compare-fichas-jornada-filter"
+                        class="text-[11px] font-medium text-slate-600">Jornada:</label>
+                    <select id="compare-fichas-jornada-filter"
+                        class="text-xs border border-slate-300 rounded-lg px-2 py-0.5 bg-white focus:outline-none focus:ring-2 focus:ring-brand-500/20">
+                        <option value="todas">Todas</option>
+                        <option value="diurna">Diurna</option>
+                        <option value="nocturna">Nocturna</option>
+                    </select>
+                </div>
+                <!-- Buscador -->
+                <div class="flex items-center gap-2 mt-1.5">
+                    <label for="compare-fichas-search" class="text-[11px] font-medium text-slate-600">Buscar:</label>
+                    <div class="relative flex-1">
+                        <i data-lucide="search"
+                            class="w-3.5 h-3.5 text-slate-400 absolute left-2.5 top-1/2 -translate-y-1/2"></i>
+                        <input id="compare-fichas-search" type="text" placeholder="Buscar por ID o programa..."
+                            class="w-full pl-8 pr-3 py-1 text-xs bg-white border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500 transition-all placeholder:text-slate-400">
+                    </div>
+                </div>
+                <div id="compare-fichas-options" class="compare-fichas-options flex flex-wrap gap-1.5 mt-2"></div>
+            </div>
+
+            <!-- Panel de cuadrícula 2x2 -->
+            <div class="compare-fichas-results flex-1 min-h-0 overflow-y-auto p-3">
+                <div id="compare-fichas-empty-state"
+                    class="border border-dashed border-slate-300 rounded-2xl bg-slate-50/70 p-8 text-center text-slate-500 text-sm font-medium">
+                    Selecciona una o varias fichas para ver su programación en paralelo.
+                </div>
+                <div id="compare-fichas-panels" class="hidden grid grid-cols-1 sm:grid-cols-2 gap-4 p-3">
+                </div>
+            </div>
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 shrink-0">
+                <button type="button" id="btn-close-compare-fichas-footer"
+                    class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition-colors cursor-pointer">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE HISTORIAL DE PROGRAMACIONES POR FICHA (SOLO CONSULTA)
+         ========================================== -->
+    <div id="ficha-history-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 animate-pop">
+        <div
+            class="bg-white rounded-2xl border border-slate-200 max-w-4xl w-full p-6 shadow-2xl space-y-4 relative max-h-[90vh] overflow-hidden flex flex-col">
+
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div class="w-11 h-11 rounded-2xl bg-indigo-100 text-indigo-800 font-bold text-sm flex items-center justify-center border border-indigo-200 shadow-2xs shrink-0">
+                        <i data-lucide="history" class="w-5.5 h-5.5 text-indigo-600"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 id="modal-history-title" class="font-extrabold text-slate-900 text-base">Historial de Programaciones</h3>
+                            <span class="bg-amber-100 text-amber-900 border border-amber-300 font-bold px-2 py-0.5 rounded-full text-[10px] flex items-center gap-1">
+                                <i data-lucide="lock" class="w-3 h-3 text-amber-700"></i> Solo Consulta (Inmutable)
+                            </span>
+                        </div>
+                        <p id="modal-history-subtitle" class="text-xs text-slate-500 font-medium">Registro de trimestres finalizados y asignaciones pasadas.</p>
+                    </div>
+                </div>
+                <button type="button" id="btn-close-ficha-history-modal"
+                    class="p-2 rounded-xl text-slate-400 hover:text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Banner informativo -->
+            <div class="bg-indigo-50/80 border border-indigo-200 rounded-xl p-3 text-xs text-indigo-950 flex items-center gap-2 shrink-0">
+                <i data-lucide="info" class="w-4.5 h-4.5 text-indigo-600 shrink-0"></i>
+                <span>Este historial muestra las asignaciones de <strong>trimestres anteriores cerrados</strong>. Las asignaciones pasadas son de solo lectura para preservar la trazabilidad institucional.</span>
+            </div>
+
+            <!-- Filtro de Trimestres Históricos -->
+            <div class="flex flex-wrap items-center justify-between gap-3 bg-slate-50 p-2.5 rounded-xl border border-slate-200 shrink-0 text-xs">
+                <div class="flex items-center gap-2">
+                    <span class="font-semibold text-slate-600">Filtrar por Trimestre Anterior:</span>
+                    <select id="modal-history-trimester-select" class="bg-white border border-slate-300 font-bold text-slate-800 rounded-lg px-2.5 py-1 focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                        <option value="ALL">Todos los Trimestres Anteriores</option>
+                    </select>
+                </div>
+                <span id="modal-history-count-badge" class="bg-indigo-100 text-indigo-900 font-bold px-2.5 py-0.5 rounded-lg text-[11px]">0 registros pasados</span>
+            </div>
+
+            <!-- Body: Contenedor con scroll para los trimestres anteriores -->
+            <div id="modal-history-content-container" class="flex-1 min-h-0 overflow-y-auto space-y-4 pr-1">
+                <!-- Se inyectan dinámicamente las tarjetas de trimestres anteriores o el estado vacío -->
+            </div>
+
+            <!-- Footer -->
+            <div class="flex items-center justify-end pt-3 border-t border-slate-100 shrink-0">
+                <button type="button" id="btn-close-ficha-history-footer"
+                    class="px-4 py-2.5 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition-colors cursor-pointer">
+                    Cerrar Historial
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==========================================
+         MODAL DE HORARIO, DISPONIBILIDAD Y RESTRICCIONES DEL INSTRUCTOR
+         ========================================== -->
+    <div id="instructor-details-modal"
+        class="fixed inset-0 bg-slate-900/60 backdrop-blur-xs z-50 flex items-center justify-center hidden p-4 animate-pop">
+        <div
+            class="bg-white rounded-2xl border border-slate-200 max-w-3xl w-full p-6 shadow-2xl space-y-4 relative max-h-[90vh] overflow-hidden flex flex-col">
+            <!-- Modal Header -->
+            <div class="flex items-center justify-between pb-3 border-b border-slate-100 shrink-0">
+                <div class="flex items-center gap-3">
+                    <div id="modal-inst-avatar"
+                        class="w-11 h-11 rounded-2xl bg-brand-100 text-brand-800 font-bold text-sm flex items-center justify-center border border-brand-200 shadow-2xs shrink-0">
+                        GR
+                    </div>
+                    <div>
+                        <div class="flex items-center gap-2">
+                            <h3 id="modal-inst-detail-name" class="text-base font-bold text-slate-900">German Ramírez</h3>
+                            <span id="modal-inst-detail-status-pill"
+                                class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-brand-100 text-brand-800 border border-brand-200">Disponible</span>
+                        </div>
+                        <p id="modal-inst-detail-area" class="text-xs text-slate-500 font-medium">Análisis y Metodologías de Software</p>
+                    </div>
+                </div>
+                <button type="button" id="btn-close-instructor-details-modal"
+                    class="text-slate-400 hover:text-slate-700 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+
+            <!-- Modal Body (Scrollable) -->
+            <div class="flex-1 overflow-y-auto space-y-4 pr-1 text-xs">
+                <!-- Resumen Carga Horaria -->
+                <div class="bg-slate-50 border border-slate-200 rounded-xl p-3.5 space-y-2">
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="font-bold text-slate-700">Carga Horaria Semanal Total:</span>
+                        <strong id="modal-inst-detail-hours-text" class="text-brand-800 font-extrabold">32 / 40h</strong>
+                    </div>
+                    <div class="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                        <div id="modal-inst-detail-hours-bar"
+                            class="h-full bg-brand-500 rounded-full transition-all duration-300" style="width: 80%"></div>
+                    </div>
+                </div>
+
+                <!-- Sección: Matriz de Disponibilidad Semanal (Días y Bloques Horarios) -->
+                <div id="modal-inst-detail-availability-section" class="border border-slate-200 rounded-xl p-3.5 space-y-2.5 bg-white shadow-2xs">
+                    <div class="flex flex-wrap items-center justify-between gap-2 pb-2 border-b border-slate-100">
+                        <div class="flex items-center gap-2">
+                            <i data-lucide="calendar-days" class="w-4 h-4 text-brand-600"></i>
+                            <h4 class="font-bold text-slate-900">Matriz de Disponibilidad Semanal</h4>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-2 text-[10px] font-semibold">
+                            <span class="flex items-center gap-1 text-emerald-700 bg-emerald-50 border border-emerald-200 px-1.5 py-0.5 rounded">
+                                <span class="w-2 h-2 rounded-full bg-emerald-500"></span> Libre
+                            </span>
+                            <span class="flex items-center gap-1 text-brand-900 bg-brand-50 border border-brand-200 px-1.5 py-0.5 rounded">
+                                <span class="w-2 h-2 rounded-full bg-brand-600"></span> Ficha Activa
+                            </span>
+                            <span class="flex items-center gap-1 text-indigo-900 bg-indigo-50 border border-indigo-200 px-1.5 py-0.5 rounded">
+                                <span class="w-2 h-2 rounded-full bg-indigo-600"></span> Otra Ficha
+                            </span>
+                            <span class="flex items-center gap-1 text-amber-900 bg-amber-50 border border-amber-200 px-1.5 py-0.5 rounded">
+                                <span class="w-2 h-2 rounded-full bg-amber-600"></span> Restricción
+                            </span>
+                        </div>
+                    </div>
+                    <div id="modal-inst-detail-availability-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-2 text-[11px]">
+                        <!-- Matriz de días y bloques inyectada dinámicamente -->
+                    </div>
+                </div>
+
+                <!-- Sección 1: Resultados de Aprendizaje que puede impartir -->
+                <div class="border border-slate-200 rounded-xl p-3.5 space-y-2 bg-white">
+                    <div class="flex items-center gap-2 pb-1.5 border-b border-slate-100">
+                        <i data-lucide="award" class="w-4 h-4 text-brand-600"></i>
+                        <h4 class="font-bold text-slate-900">Resultados de Aprendizaje Habilitados (RAs)</h4>
+                        <span id="modal-inst-detail-ra-count"
+                            class="ml-auto text-[10px] font-bold bg-brand-50 text-brand-800 border border-brand-200 px-2 py-0.5 rounded-full">0 RAs</span>
+                    </div>
+                    <div id="modal-inst-detail-ra-list" class="space-y-1.5 max-h-44 overflow-y-auto pr-1 pt-1">
+                        <!-- RAs list items injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Sección 2: Restricciones Horarias y Compromisos Externos -->
+                <div class="border border-amber-200 rounded-xl p-3.5 space-y-2 bg-amber-50/40">
+                    <div class="flex items-center gap-2 pb-1.5 border-b border-amber-200/60">
+                        <i data-lucide="clock" class="w-4 h-4 text-amber-600"></i>
+                        <h4 class="font-bold text-amber-950">Restricciones de Horario y Compromisos Externos</h4>
+                    </div>
+                    <div id="modal-inst-detail-restrictions-list" class="space-y-1.5">
+                        <!-- Restrictions injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Sección 3: Horario Activo en Formación (Periodo Actual) -->
+                <div class="border border-slate-200 rounded-xl p-3.5 space-y-2 bg-white">
+                    <div class="flex items-center gap-2 pb-1.5 border-b border-slate-100">
+                        <i data-lucide="calendar-check" class="w-4 h-4 text-indigo-600"></i>
+                        <h4 class="font-bold text-slate-900">Horario Activo en Formación (Periodo Actual)</h4>
+                        <span id="modal-inst-detail-active-count"
+                            class="ml-auto text-[10px] font-bold bg-indigo-50 text-indigo-800 border border-indigo-200 px-2 py-0.5 rounded-full">0 Bloques</span>
+                    </div>
+                    <div id="modal-inst-detail-active-schedule" class="space-y-1.5">
+                        <!-- Active schedules across all fiches injected dynamically -->
+                    </div>
+                </div>
+
+                <!-- Sección 4: Historial de Programación (Periodos Anteriores / Finalizados) -->
+                <div class="border border-slate-200 rounded-xl p-3.5 space-y-2 bg-slate-50/70">
+                    <div class="flex items-center gap-2 pb-1.5 border-b border-slate-200">
+                        <i data-lucide="history" class="w-4 h-4 text-slate-500"></i>
+                        <h4 class="font-bold text-slate-700">Historial Académico (Periodos Finalizados - Solo Informativo)</h4>
+                    </div>
+                    <div id="modal-inst-detail-history-list" class="space-y-1.5">
+                        <!-- Historical schedules injected dynamically -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Footer -->
+            <div class="flex items-center justify-end gap-3 pt-3 border-t border-slate-100 shrink-0">
+                <button type="button" id="btn-close-instructor-details-footer"
+                    class="px-4 py-2 rounded-xl border border-slate-200 text-slate-600 font-semibold text-xs hover:bg-slate-50 transition-colors cursor-pointer">
+                    Cerrar
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

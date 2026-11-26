@@ -274,9 +274,9 @@
 
 .page-content {
   margin: 0 auto;
-  max-width: 1300px;
+  max-width: none;
   min-height: calc(100vh - 76px);
-  padding: 43px clamp(24px, 5vw, 72px) 60px;
+  padding: 28px clamp(16px, 2vw, 32px) 40px;
 }
 
 .content-panel {
@@ -285,8 +285,7 @@
   border-radius: 20px;
   box-shadow: 0 15px 40px rgba(32, 52, 94, .05);
   min-height: calc(100vh - 179px);
-  overflow: hidden;
-  padding: 32px;
+  padding: 24px;
 }
 
 .welcome {
