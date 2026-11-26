@@ -1,1 +1,32 @@
-<p>disponibilidad works!</p>
+<div class="disponibilidad-shell">
+  <app-disponibilidad-header
+    [instructores]="servicio.instructores"
+    [instructorSeleccionadoId]="servicio.instructorSeleccionadoId()"
+    (instructorChange)="onSeleccionarInstructor($event)"
+  />
+
+  <div class="disponibilidad-grid">
+    <div class="col-tabla">
+      <app-horario-tabla
+        [horas]="servicio.horas"
+        [dias]="servicio.dias"
+        [matriz]="servicio.matrizRestricciones()"
+        (celdaToggle)="onAlternarCelda($event)"
+        (horaToggle)="onAlternarHora($event)"
+        (diaToggle)="onAlternarDia($event)"
+        (todasToggle)="onAlternarTodas()"
+      />
+    </div>
+
+    <div class="col-ficha">
+      <app-ficha-instructor
+        [instructor]="servicio.instructorSeleccionado()"
+        [totalHoras]="servicio.totalHorasRestringidas()"
+        [mensaje]="servicio.mensaje()"
+        (restriccionNocturnaClick)="onAplicarRestriccionNocturna()"
+        (guardarClick)="onGuardarRestricciones()"
+        (enviarCorreoClick)="onEnviarCorreo()"
+      />
+    </div>
+  </div>
+</div>

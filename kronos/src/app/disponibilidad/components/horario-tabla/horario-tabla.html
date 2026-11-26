@@ -1,0 +1,68 @@
+<section class="tabla-panel" aria-label="Tabla de disponibilidad horaria">
+  <div class="tabla-compacta">
+    <table id="tablaGestion">
+      <thead>
+        <tr>
+          <th class="th-hora">
+            <div>Hora</div>
+            <button
+              type="button"
+              class="btn-hora-accion"
+              (click)="todasToggle.emit()"
+            >
+              Todas
+            </button>
+          </th>
+          @for (dia of dias(); track dia; let col = $index) {
+            <th>
+              {{ dia }}
+              <button
+                type="button"
+                class="btn-header-accion"
+                (click)="diaToggle.emit(col)"
+              >
+                Día compl.
+              </button>
+            </th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (hora of horas(); track hora; let fila = $index) {
+          <tr>
+            <td class="celda-hora">
+              <div class="hora-contenido">
+                <span class="hora-texto">{{ formatearHoraCorta(hora) }}</span>
+                <button
+                  type="button"
+                  class="btn-hora-accion btn-hora-fila"
+                  title="Seleccionar hora completa"
+                  [attr.aria-label]="'Seleccionar ' + hora + ' en todos los días'"
+                  (click)="horaToggle.emit(fila)"
+                >
+                  <svg viewBox="0 0 24 24" class="arrows-icon" aria-hidden="true">
+                    <path d="M7 8l-4 4 4 4M17 8l4 4-4 4M3 12h18" />
+                  </svg>
+                </button>
+              </div>
+            </td>
+            @for (dia of dias(); track dia; let col = $index) {
+              @let restringido = matriz()[fila]?.[col] ?? false;
+              <td
+                class="celda-horario"
+                [class.restringido]="restringido"
+                role="button"
+                tabindex="0"
+                [attr.aria-pressed]="restringido"
+                [attr.aria-label]="dia + ' ' + hora + (restringido ? ' restringido' : ' disponible')"
+                (click)="celdaToggle.emit({ fila, columna: col })"
+                (keydown.enter)="celdaToggle.emit({ fila, columna: col })"
+                (keydown.space)="$event.preventDefault(); celdaToggle.emit({ fila, columna: col })"
+              ></td>
+            }
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
