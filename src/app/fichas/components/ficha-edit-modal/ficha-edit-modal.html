@@ -1,0 +1,93 @@
+@if (ficha(); as current) {
+  <div
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-editar-ficha"
+    (click)="onBackdropClick($event)"
+  >
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="icon-amber"
+          >
+            <path
+              d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+            />
+            <path d="m15 5 4 4" />
+          </svg>
+          <h3 id="titulo-editar-ficha">
+            Editar ficha <span class="code-badge">#{{ current.codigo }}</span>
+          </h3>
+        </div>
+        <button
+          type="button"
+          class="btn-close-icon"
+          aria-label="Cerrar modal de edición"
+          (click)="close.emit()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <form [formGroup]="editForm" (ngSubmit)="onSave()" class="modal-body">
+        <div class="edit-grid">
+          <div class="edit-field">
+            <label for="inputFechaFin">Fecha de finalización</label>
+            <div class="input-frame">
+              <input id="inputFechaFin" type="date" formControlName="fechaTerminoIso" />
+            </div>
+          </div>
+
+          <div class="edit-field">
+            <label for="selectSede">Sede</label>
+            <div class="input-frame">
+              <select id="selectSede" formControlName="sede">
+                @for (sede of sedes; track sede) {
+                  <option [value]="sede">{{ sede }}</option>
+                }
+              </select>
+            </div>
+          </div>
+
+          <div class="edit-field full-span">
+            <label for="selectInstructor">Instructor líder</label>
+            <div class="input-frame">
+              <select id="selectInstructor" formControlName="instructorLider">
+                @for (instructor of instructores; track instructor) {
+                  <option [value]="instructor">{{ instructor }}</option>
+                }
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" class="btn-secondary" (click)="close.emit()">Cancelar</button>
+          <button type="submit" class="btn-primary">Guardar Cambios</button>
+        </div>
+      </form>
+    </div>
+  </div>
+}

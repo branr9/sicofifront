@@ -1,0 +1,109 @@
+@if (ficha(); as current) {
+  <div
+    class="modal-backdrop"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="titulo-detalle-ficha"
+    (click)="onBackdropClick($event)"
+  >
+    <div class="modal-panel">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+            class="icon-sky"
+          >
+            <path
+              d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"
+            />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+          <h3 id="titulo-detalle-ficha">
+            Ficha <span class="code-badge">#{{ current.codigo }}</span>
+          </h3>
+        </div>
+        <button
+          type="button"
+          class="btn-close-icon"
+          aria-label="Cerrar consulta de ficha"
+          (click)="close.emit()"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M18 6 6 18" />
+            <path d="m6 6 12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="detail-grid">
+        <div class="detail-item full-span">
+          <span class="detail-label">Programa / Proyecto</span>
+          <strong class="detail-value">{{ current.nombre }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Código Programa</span>
+          <strong class="detail-value">{{ current.codPrograma }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Código Proyecto</span>
+          <strong class="detail-value">{{ current.codProyecto }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Nivel y Versión</span>
+          <strong class="detail-value">{{ current.nivelFormacion }} · {{ current.version }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Jornada</span>
+          <strong class="detail-value">{{ current.jornada }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Sede</span>
+          <strong class="detail-value">{{ current.sede }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Instructor Líder</span>
+          <strong class="detail-value text-lime">{{ current.instructorLider }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Fecha Inicio</span>
+          <strong class="detail-value">{{ current.fechaInicio }}</strong>
+        </div>
+        <div class="detail-item">
+          <span class="detail-label">Fecha Término</span>
+          <strong class="detail-value">{{ current.fechaTermino }}</strong>
+        </div>
+        <div class="detail-item full-span">
+          <span class="detail-label">Días Programados</span>
+          <div class="days-tags">
+            @for (dia of current.diasLista; track dia) {
+              <span class="day-tag">{{ dia }}</span>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn-secondary" (click)="close.emit()">Cerrar</button>
+        <button type="button" class="btn-primary" (click)="editRequested.emit(current)">
+          Editar Ficha
+        </button>
+      </div>
+    </div>
+  </div>
+}
