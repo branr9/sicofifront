@@ -1,0 +1,183 @@
+<section class="form-card" aria-labelledby="titulo-form-ficha">
+  <div class="form-header">
+    <div class="form-title-group">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+        class="icon-lime"
+      >
+        <path d="M6 22a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h8a2.4 2.4 0 0 1 1.704.706l3.588 3.588A2.4 2.4 0 0 1 20 8v12a2 2 0 0 1-2 2z" />
+        <path d="M14 2v5a1 1 0 0 0 1 1h5" />
+        <path d="M9 15h6" />
+        <path d="M12 18v-6" />
+      </svg>
+      <h3 id="titulo-form-ficha">Formulario de Registro / Edición de Ficha</h3>
+    </div>
+    <span class="step-badge">Paso 1 de 2</span>
+  </div>
+
+  @if (formError()) {
+    <div class="form-alert" role="alert">
+      {{ formError() }}
+    </div>
+  }
+
+  <form [formGroup]="fichaForm" (ngSubmit)="onSubmit()" class="ficha-grid" novalidate>
+    <div class="field-group">
+      <label for="crearCodigo">Código Ficha</label>
+      <input
+        id="crearCodigo"
+        type="text"
+        formControlName="codigo"
+        placeholder="Ej: 2395063"
+        [class.input-invalid]="submitted() && fichaForm.controls.codigo.invalid"
+      />
+    </div>
+
+    <div class="field-group span-2">
+      <label for="crearNombre">Nombre del Proyecto</label>
+      <input
+        id="crearNombre"
+        type="text"
+        formControlName="nombre"
+        placeholder="Ingrese el nombre del proyecto"
+        [class.input-invalid]="submitted() && fichaForm.controls.nombre.invalid"
+      />
+    </div>
+
+    <div class="field-group">
+      <label for="crearPrograma">Programa (Cod.)</label>
+      <input
+        id="crearPrograma"
+        type="text"
+        formControlName="codPrograma"
+        placeholder="Ej: 228106000"
+        [class.input-invalid]="submitted() && fichaForm.controls.codPrograma.invalid"
+      />
+    </div>
+
+    <div class="field-group">
+      <label for="crearNivel">Nivel de Formación</label>
+      <select id="crearNivel" formControlName="nivelFormacion">
+        @for (nivel of niveles; track nivel) {
+          <option [value]="nivel">{{ nivel }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="crearJornada">Jornada</label>
+      <select id="crearJornada" formControlName="jornada">
+        @for (jornada of jornadas; track jornada) {
+          <option [value]="jornada">{{ jornada }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="crearSede">Sede</label>
+      <select id="crearSede" formControlName="sede">
+        @for (sede of sedes; track sede) {
+          <option [value]="sede">{{ sede }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="crearVersion">Versión</label>
+      <input
+        id="crearVersion"
+        type="text"
+        formControlName="version"
+        placeholder="Ej: V1"
+        [class.input-invalid]="submitted() && fichaForm.controls.version.invalid"
+      />
+    </div>
+
+    <div class="field-group span-2">
+      <label for="crearInstructor">Instructor Líder</label>
+      <select id="crearInstructor" formControlName="instructorLider">
+        @for (instructor of instructores; track instructor) {
+          <option [value]="instructor">{{ instructor }}</option>
+        }
+      </select>
+    </div>
+
+    <div class="field-group">
+      <label for="crearFechaInicio">Fecha de Inicio</label>
+      <input
+        id="crearFechaInicio"
+        type="date"
+        formControlName="fechaInicio"
+        [class.input-invalid]="submitted() && fichaForm.controls.fechaInicio.invalid"
+      />
+    </div>
+
+    <div class="field-group">
+      <label for="crearFechaFin">Fecha de Finalización</label>
+      <input
+        id="crearFechaFin"
+        type="date"
+        formControlName="fechaFin"
+        [class.input-invalid]="submitted() && fichaForm.controls.fechaFin.invalid"
+      />
+    </div>
+
+    <div class="field-group span-days">
+      <label for="tipoDias">Tipo de programación semanal</label>
+      <select
+        id="tipoDias"
+        formControlName="tipoDias"
+        (change)="onTipoDiasChange()"
+        [class.input-invalid]="submitted() && fichaForm.controls.tipoDias.invalid"
+      >
+        <option value="">Seleccione una opción</option>
+        <option value="tecnico-tecnologo">Ficha Técnico / Tecnólogo</option>
+        <option value="otro">Otro</option>
+      </select>
+    </div>
+
+    <div class="field-group span-days">
+      <label>Días de la semana</label>
+      <div class="dias-box">
+        @switch (tipoDiasActual) {
+          @case ('tecnico-tecnologo') {
+            <div class="dias-automaticos">
+              @for (dia of diasAutomaticos; track dia) {
+                <span class="dia-pill">{{ dia }}</span>
+              }
+            </div>
+          }
+          @case ('otro') {
+            <div class="dias-checkboxes">
+              @for (dia of diasSemana; track dia) {
+                <label class="dia-check-item">
+                  <input
+                    type="checkbox"
+                    [checked]="isDiaSelected(dia)"
+                    (change)="toggleDia(dia, $event)"
+                  />
+                  <span>{{ dia }}</span>
+                </label>
+              }
+            </div>
+          }
+          @default {
+            <p class="dias-placeholder">Seleccione primero el tipo de programación.</p>
+          }
+        }
+      </div>
+    </div>
+
+    <div class="form-footer span-full">
+      <button type="button" class="btn-cancel" (click)="resetForm()">Cancelar</button>
+      <button type="submit" class="btn-save">Guardar Ficha</button>
+    </div>
+  </form>
+</section>

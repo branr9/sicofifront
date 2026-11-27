@@ -1,0 +1,111 @@
+<div class="fichas-workspace">
+  <header class="module-header">
+    <div class="module-heading">
+      <div class="module-badge" aria-hidden="true">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path
+            d="M4 20h16a2 2 0 0 0 2-2V8a2 2 0 0 0-2-2h-7.93a2 2 0 0 1-1.66-.9l-.82-1.2A2 2 0 0 0 7.93 3H4a2 2 0 0 0-2 2v13c0 1.1.9 2 2 2Z"
+          />
+          <path d="M8 10v4" />
+          <path d="M12 10v2" />
+          <path d="M16 10v6" />
+        </svg>
+      </div>
+      <div>
+        <h2 class="module-title">GESTIÓN DE FICHAS</h2>
+        <p class="module-subtitle">SENA Academic Manager · Control de fichas y avance RAP</p>
+      </div>
+    </div>
+
+    <div class="module-meta">
+      <span class="total-badge">{{ fichasService.fichas().length }} Fichas activas</span>
+    </div>
+  </header>
+
+  @if (fichasService.toast(); as toast) {
+    <div class="toast-banner" [class]="'toast-' + toast.tipo" role="status" aria-live="polite">
+      <span>{{ toast.mensaje }}</span>
+      <button
+        type="button"
+        class="toast-close"
+        aria-label="Cerrar notificación"
+        (click)="fichasService.clearToast()"
+      >
+        ×
+      </button>
+    </div>
+  }
+
+  <div class="workspace-stack">
+    <app-fichas-tabla
+      [fichas]="fichasService.filteredFichas()"
+      [searchTerm]="fichasService.searchTerm()"
+      [selectedCodigo]="fichasService.selectedFicha()?.codigo ?? null"
+      (searchChange)="fichasService.setSearchTerm($event)"
+      (openHistorial)="historialOpen.set(true)"
+      (selectFicha)="fichasService.selectFicha($event)"
+      (consultarFicha)="onConsultarFicha($event)"
+      (editarFicha)="editingFicha.set($event)"
+      (eliminarFicha)="fichaToDelete.set($event)"
+    />
+
+    <app-ficha-form
+      [resetTick]="formResetTick()"
+      (submitFicha)="onCreateFicha($event)"
+    />
+
+    <app-ficha-rap-avance [ficha]="fichasService.selectedFicha()" />
+  </div>
+
+  <app-ficha-edit-modal
+    [ficha]="editingFicha()"
+    (close)="editingFicha.set(null)"
+    (save)="onSaveEdit($event)"
+  />
+
+  <app-ficha-historial-modal
+    [isOpen]="historialOpen()"
+    [historial]="fichasService.historial()"
+    (close)="historialOpen.set(false)"
+  />
+
+  <app-ficha-detalle-modal
+    [ficha]="viewingFicha()"
+    (close)="viewingFicha.set(null)"
+    (editRequested)="onEditFromDetail($event)"
+  />
+
+  @if (fichaToDelete(); as target) {
+    <div
+      class="confirm-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="titulo-confirmar-eliminacion"
+      (click)="onDeleteBackdropClick($event)"
+    >
+      <div class="confirm-panel">
+        <h3 id="titulo-confirmar-eliminacion">Eliminar ficha #{{ target.codigo }}</h3>
+        <p>
+          ¿Está seguro de eliminar la ficha <strong>{{ target.nombre }}</strong>? Esta acción la
+          retirará del listado y quedará registrada en el historial.
+        </p>
+        <div class="confirm-actions">
+          <button type="button" class="btn-cancel-del" (click)="fichaToDelete.set(null)">
+            Cancelar
+          </button>
+          <button type="button" class="btn-confirm-del" (click)="onConfirmDelete()">
+            Eliminar Ficha
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+</div>

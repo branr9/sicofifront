@@ -1,0 +1,199 @@
+:host {
+  display: block;
+  --ficha-bg: #0b0f19;
+  --ficha-surface: #0d1322;
+  --ficha-card: #131b2e;
+  --ficha-border: #1e293b;
+  --ficha-lime: #84cc16;
+}
+
+.fichas-workspace {
+  background: var(--ficha-bg);
+  color: #cbd5e1;
+  border-radius: 1rem;
+  border: 1px solid var(--ficha-border);
+  overflow: hidden;
+}
+
+.module-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.125rem 1.5rem;
+  background: rgba(13, 19, 34, 0.85);
+  border-bottom: 1px solid var(--ficha-border);
+}
+
+.module-heading {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+}
+
+.module-badge {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 0.75rem;
+  background: rgba(132, 204, 22, 0.16);
+  color: #a3e635;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.module-badge svg {
+  width: 1.25rem;
+  height: 1.25rem;
+}
+
+.module-title {
+  margin: 0;
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.01em;
+}
+
+.module-subtitle {
+  margin: 0.15rem 0 0;
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.total-badge {
+  display: inline-block;
+  padding: 0.35rem 0.75rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: rgba(132, 204, 22, 0.12);
+  color: #a3e635;
+  border: 1px solid rgba(132, 204, 22, 0.25);
+}
+
+.toast-banner {
+  margin: 1rem 1.5rem 0;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.toast-success {
+  background: rgba(132, 204, 22, 0.12);
+  border: 1px solid rgba(132, 204, 22, 0.35);
+  color: #bef264;
+}
+
+.toast-error {
+  background: rgba(239, 68, 68, 0.12);
+  border: 1px solid rgba(248, 113, 113, 0.4);
+  color: #fca5a5;
+}
+
+.toast-info {
+  background: rgba(14, 165, 233, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.35);
+  color: #7dd3fc;
+}
+
+.toast-close {
+  background: transparent;
+  border: 0;
+  color: inherit;
+  font-size: 1.1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.workspace-stack {
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.confirm-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 6, 23, 0.8);
+  backdrop-filter: blur(4px);
+  z-index: 60;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.confirm-panel {
+  background: var(--ficha-card);
+  border: 1px solid #334155;
+  border-radius: 0.75rem;
+  max-width: 26rem;
+  width: 100%;
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+.confirm-panel h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.confirm-panel p {
+  margin: 0;
+  font-size: 0.8125rem;
+  color: #94a3b8;
+  line-height: 1.5;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  padding-top: 0.5rem;
+}
+
+.btn-cancel-del,
+.btn-confirm-del {
+  border: 0;
+  border-radius: 0.5rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.btn-cancel-del {
+  padding: 0.5rem 1rem;
+  background: #1e293b;
+  color: #cbd5e1;
+}
+
+.btn-confirm-del {
+  padding: 0.5rem 1.125rem;
+  background: #ef4444;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-confirm-del:hover {
+  background: #dc2626;
+}
+
+@media (max-width: 640px) {
+  .workspace-stack,
+  .module-header {
+    padding: 1rem;
+  }
+}

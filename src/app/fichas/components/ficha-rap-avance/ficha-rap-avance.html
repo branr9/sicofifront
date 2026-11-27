@@ -1,0 +1,129 @@
+<section class="rap-card" aria-labelledby="titulo-rap-avance">
+  <div class="rap-header">
+    <div class="rap-title-group">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        aria-hidden="true"
+      >
+        <path
+          d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"
+        />
+        <circle cx="12" cy="8" r="6" />
+      </svg>
+      <h3 id="titulo-rap-avance">Avances de Resultados de Aprendizaje (RAP)</h3>
+    </div>
+
+    @if (ficha(); as current) {
+      <span class="ficha-pill">
+        Ficha seleccionada: #{{ current.codigo }} - {{ current.nombre }}
+      </span>
+    } @else {
+      <span class="ficha-pill">Sin ficha seleccionada</span>
+    }
+  </div>
+
+  @if (ficha(); as current) {
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div>
+          <p class="kpi-label">Total RAP Programados</p>
+          <h4 class="kpi-value text-white">{{ totalRaps() }} RAP</h4>
+        </div>
+        <div class="kpi-icon kpi-sky">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M12 5v16" />
+            <path
+              d="M20.001 19A2 2 0 0022 17V5a2 2 0 00-1.999-2L16 3.002A5 5 0 0012 5a5 5 0 00-4-2H4a2 2 0 00-2 2v12a2 2 0 001.999 2H8a5 5 0 014 2 5 5 0 014-2z"
+            />
+          </svg>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <p class="kpi-label">RAP Evaluados y Aprobados</p>
+          <h4 class="kpi-value text-lime">{{ rapsAprobados() }} RAP</h4>
+        </div>
+        <div class="kpi-icon kpi-lime">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m9 12 2 2 4-4" />
+          </svg>
+        </div>
+      </div>
+
+      <div class="kpi-card">
+        <div>
+          <p class="kpi-label">Avance General del Programa</p>
+          <h4 class="kpi-value text-amber">{{ avanceGeneral() }}%</h4>
+        </div>
+        <div class="kpi-icon kpi-amber">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            aria-hidden="true"
+          >
+            <path d="M16 7h6v6" />
+            <path d="m22 7-8.5 8.5-5-5L2 17" />
+          </svg>
+        </div>
+      </div>
+    </div>
+
+    <div class="rap-list-wrapper">
+      <h4 class="rap-list-heading">Avance por Competencias Técnicas</h4>
+
+      @for (rap of current.raps; track rap.codigo) {
+        <div class="rap-item">
+          <div class="rap-item-top">
+            <div class="rap-item-info">
+              <span class="rap-code">{{ rap.codigo }}</span>
+              <span class="rap-desc">{{ rap.descripcion }}</span>
+            </div>
+            <span class="rap-status" [class]="getToneClass(rap.estado)">
+              {{ rap.porcentaje }}% ({{ rap.estado }})
+            </span>
+          </div>
+          <div class="progress-track">
+            <div
+              class="progress-fill"
+              [class]="getToneClass(rap.estado)"
+              [style.width.%]="rap.porcentaje"
+            ></div>
+          </div>
+        </div>
+      }
+    </div>
+  } @else {
+    <p class="empty-rap">Seleccione o cree una ficha para consultar el avance de sus RAP.</p>
+  }
+</section>
