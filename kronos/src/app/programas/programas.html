@@ -1,1 +1,296 @@
-<p>programas works!</p>
+<section class="programas-view">
+  <header class="programas-header">
+    <h1>Gestión de Programas</h1>
+    <p>
+      Módulo administrativo para la creación, consulta, actualización y estructuración curricular de programas de formación del
+      SENA. Permite la asociación interactiva de competencias desde el banco curricular, con cálculo automático de horas totales
+      y Resultados de Aprendizaje (RAS).
+    </p>
+  </header>
+
+  <div class="toolbar">
+    <label class="search-box">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <circle cx="11" cy="11" r="6"></circle>
+        <path d="m16 16 4 4"></path>
+      </svg>
+      <input
+        type="search"
+        [(ngModel)]="busqueda"
+        placeholder="Buscar por código, nombre o nivel..."
+        aria-label="Buscar programas"
+      />
+    </label>
+
+    <div class="toolbar-actions">
+      <span class="program-count">{{ programasFiltrados().length }} programa(s) en total</span>
+      <button class="create-button" type="button" (click)="abrirModal()">
+        <span aria-hidden="true">＋</span>
+        Crear Programa
+      </button>
+    </div>
+  </div>
+
+  <div class="table-shell">
+    <table>
+      <thead>
+        <tr>
+          <th>Código</th>
+          <th>Nombre del programa</th>
+          <th>Nivel</th>
+          <th>Versión</th>
+          <th>Estado</th>
+          <th>Vinculación con proyecto</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (programa of programasFiltrados(); track programa.codigo) {
+          <tr>
+            <td class="codigo">{{ programa.codigo }}</td>
+            <td class="nombre">{{ programa.nombre }}</td>
+            <td>
+              <span class="level-pill">{{ programa.nivel }}</span>
+            </td>
+            <td class="version">{{ programa.version }}</td>
+            <td>
+              <span class="status-pill" [class.inactive]="!programa.activo">
+                <span class="status-dot"></span>
+                {{ programa.activo ? 'Activo' : 'Inactivo' }}
+              </span>
+            </td>
+            <td>
+              @if (programa.proyecto; as proyecto) {
+                <div class="project-link">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <circle cx="18" cy="5" r="2"></circle>
+                    <circle cx="6" cy="12" r="2"></circle>
+                    <circle cx="18" cy="19" r="2"></circle>
+                    <path d="M8 12h3a4 4 0 0 0 4-4V7M8 12h3a4 4 0 0 1 4 4v1"></path>
+                  </svg>
+                  <span><strong>{{ proyecto.codigo }}:</strong> {{ proyecto.nombre }}</span>
+                </div>
+              } @else {
+                <span class="no-project">Sin vinculación</span>
+              }
+            </td>
+            <td>
+              <div class="row-actions">
+                <button type="button" aria-label="Ver programa" title="Ver programa">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M2.5 12s3.5-6 9.5-6 9.5 6 9.5 6-3.5 6-9.5 6-9.5-6-9.5-6Z"></path>
+                    <circle cx="12" cy="12" r="2.5"></circle>
+                  </svg>
+                </button>
+                <button type="button" aria-label="Editar programa" title="Editar programa">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 20h4l11-11a2.8 2.8 0 0 0-4-4L4 16v4Z"></path>
+                    <path d="m13.5 6.5 4 4"></path>
+                  </svg>
+                </button>
+                <button class="delete-action" type="button" aria-label="Eliminar programa" title="Eliminar programa">
+                  <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 7h16M9 7V4h6v3M8 7l1 13h6l1-13M10.5 11v5M13.5 11v5"></path>
+                  </svg>
+                </button>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td class="empty-row" colspan="7">No se encontraron programas</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</section>
+
+@if (modalVisible()) {
+  <div class="modal-backdrop" role="presentation" (click)="cerrarModal()">
+    <section
+      class="program-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      (click)="$event.stopPropagation()"
+    >
+      <header class="modal-header">
+        <div>
+          <h2 id="modal-title">Crear Programa de Formación</h2>
+          <p>estructuración curricular y asignación interactiva de competencias</p>
+        </div>
+        <button type="button" class="modal-close" aria-label="Cerrar" (click)="cerrarModal()">×</button>
+      </header>
+
+      <div class="modal-body">
+        <div class="summary-cards">
+          <article class="summary-card">
+            <div class="summary-icon blue">▦</div>
+            <div>
+              <span>Competencias</span>
+              <strong>{{ competenciasAsignadas().length }} <small>Totales</small></strong>
+              <div class="summary-pills">
+                <small>{{ totalTecnicas() }} Técn.</small>
+                <small>{{ totalTransversales() }} Trans.</small>
+                <small>{{ totalBilinguismo() }} Bil.</small>
+              </div>
+            </div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-icon coral">◎</div>
+            <div>
+              <span>Resultados (RAS)</span>
+              <strong>{{ competenciesAssignedResults() }}</strong>
+              <small>Sumatoria acumulada</small>
+            </div>
+          </article>
+          <article class="summary-card">
+            <div class="summary-icon rose">⏱</div>
+            <div>
+              <span>Horas Totales</span>
+              <strong>{{ totalHoras() }} h</strong>
+              <small>Cálculo dinámico</small>
+            </div>
+          </article>
+        </div>
+
+        <form class="program-form" (submit)="$event.preventDefault(); crearPrograma()">
+          <div class="form-heading">
+            <h3>◩ <span>Datos generales del programa</span></h3>
+            <button type="button" class="competence-button" (click)="competenciaSearch.focus()">＋ Crear competencia</button>
+          </div>
+
+          <div class="general-fields">
+            <label>
+              <span>Nombre del Programa *</span>
+              <input [(ngModel)]="programaForm.nombre" name="nombre" placeholder="Ej: Análisis y Desarrollo de Software" />
+            </label>
+            <label>
+              <span>Nivel de Formación *</span>
+              <select [(ngModel)]="programaForm.nivel" name="nivel">
+                <option value="">Seleccione...</option>
+                <option value="Tecnólogo">Tecnólogo</option>
+                <option value="Técnico">Técnico</option>
+              </select>
+            </label>
+            <label>
+              <span>Código SENA / Norma *</span>
+              <input [(ngModel)]="programaForm.codigo" name="codigo" placeholder="Ej: 228118" />
+            </label>
+            <label>
+              <span>Versión *</span>
+              <input [(ngModel)]="programaForm.version" name="version" placeholder="Ej: 102" />
+            </label>
+          </div>
+
+          <label class="project-field">
+            <span>◉ Vincular Programa a Proyecto <small>Opcional</small></span>
+            <select
+              [ngModel]="programaForm.proyecto?.codigo ?? ''"
+              name="proyecto"
+              (ngModelChange)="seleccionarProyecto($event)"
+            >
+              <option value="">-- No vincular a ningún proyecto --</option>
+              @for (proyecto of proyectos(); track proyecto.codigo) {
+                <option [value]="proyecto.codigo">{{ proyecto.codigo }} - {{ proyecto.nombre }}</option>
+              }
+            </select>
+          </label>
+
+          @if (mensajeError()) {
+            <p class="form-error">{{ mensajeError() }}</p>
+          }
+
+          <div class="curriculum-grid">
+            <section class="curriculum-column bank-column">
+              <header>
+                <h3><span class="column-icon green">▣</span> Banco curricular</h3>
+              </header>
+              <input
+                #competenciaSearch
+                class="competence-filter"
+                type="search"
+                [(ngModel)]="filtroCompetencias"
+                name="filtroCompetencias"
+                placeholder="⌕  Filtrar banco de competencias..."
+              />
+              <div class="competence-list">
+                @for (competencia of competenciasFiltradas(); track competencia.codigo) {
+                  <article
+                    class="competence-card"
+                    draggable="true"
+                    (dragstart)="iniciarArrastre($event, competencia.codigo)"
+                  >
+                    <div class="competence-meta">
+                      <span>{{ competencia.codigo }}</span>
+                      <small>◎ {{ competencia.resultados }} RAS</small>
+                    </div>
+                    <p>{{ competencia.nombre }}</p>
+                    <div class="competence-footer">
+                      <span>◷ Arrastrar a un panel</span>
+                      <button type="button" (click)="asignarCompetencia(competencia.codigo)">＋ Asignar</button>
+                    </div>
+                  </article>
+                }
+              </div>
+            </section>
+
+            <section
+              class="curriculum-column drop-zone"
+              (dragover)="permitirSoltar($event)"
+              (drop)="soltarCompetencia($event, 'transversales')"
+            >
+              <header><h3><span class="column-icon orange"></span> Transversales</h3><span class="category-count">{{ totalTransversales() }}</span></header>
+              <div class="assigned-list">
+                @for (item of competenciasAsignadas(); track item.competencia.codigo) {
+                  @if (item.categoria === 'transversales') {
+                    <button type="button" class="assigned-item" (click)="quitarCompetencia(item.competencia.codigo)">{{ item.competencia.nombre }}</button>
+                  }
+                }
+              </div>
+            </section>
+
+            <section
+              class="curriculum-column drop-zone"
+              (dragover)="permitirSoltar($event)"
+              (drop)="soltarCompetencia($event, 'tecnicas')"
+            >
+              <header><h3><span class="column-icon blue"></span> Técnicas</h3><span class="category-count">{{ totalTecnicas() }}</span></header>
+              <div class="assigned-list">
+                @for (item of competenciasAsignadas(); track item.competencia.codigo) {
+                  @if (item.categoria === 'tecnicas') {
+                    <button type="button" class="assigned-item" (click)="quitarCompetencia(item.competencia.codigo)">{{ item.competencia.nombre }}</button>
+                  }
+                }
+              </div>
+            </section>
+
+            <section
+              class="curriculum-column drop-zone"
+              (dragover)="permitirSoltar($event)"
+              (drop)="soltarCompetencia($event, 'bilinguismo')"
+            >
+              <header><h3><span class="column-icon pink"></span> Bilingüismo</h3><span class="category-count">{{ totalBilinguismo() }}</span></header>
+              <div class="assigned-list">
+                @for (item of competenciasAsignadas(); track item.competencia.codigo) {
+                  @if (item.categoria === 'bilinguismo') {
+                    <button type="button" class="assigned-item" (click)="quitarCompetencia(item.competencia.codigo)">{{ item.competencia.nombre }}</button>
+                  }
+                }
+              </div>
+            </section>
+          </div>
+        </form>
+      </div>
+
+      <footer class="modal-footer">
+        <button type="button" class="reset-button" (click)="reiniciarFormulario()">↻ Reiniciar</button>
+        <div>
+          <button type="button" class="cancel-button" (click)="cerrarModal()">× Cancelar</button>
+          <button type="button" class="save-button" (click)="crearPrograma()">▣ Guardar Programa</button>
+        </div>
+      </footer>
+    </section>
+  </div>
+}
